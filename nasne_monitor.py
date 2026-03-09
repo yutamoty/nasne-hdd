@@ -368,6 +368,12 @@ def main():
     # ログ設定
     setup_logging(config)
 
+    # 必須項目のチェック
+    if not config.get('nasne_ip'):
+        raise ValueError("nasne_ip が設定されていません。config.yaml または環境変数 NASNE_IP で指定してください。")
+    if not args.local and not config.get('discord_webhook_url'):
+        raise ValueError("discord_webhook_url が設定されていません。config.yaml または環境変数 DISCORD_WEBHOOK_URL で指定してください。")
+
     # 監視インスタンス作成
     if args.local:
         monitor = NasneMonitor(config['nasne_ip'], local_mode=True)
@@ -386,7 +392,7 @@ def main():
 
 def load_config(config_path: str = None) -> Dict:
     """
-    設定を読み込む（環境変数 > 設定ファイル > デフォルト値の優先順位）
+    設定を読み込む（環境変数 > 設定ファイルの優先順位）
 
     Args:
         config_path: 設定ファイルのパス
@@ -394,10 +400,7 @@ def load_config(config_path: str = None) -> Dict:
     Returns:
         設定辞書
     """
-    config = {
-        'nasne_ip': '<nasneのIPアドレス>',
-        'discord_webhook_url': '<Discord WebhookのURL>'
-    }
+    config = {}
 
     # 設定ファイルから読み込み（YAML形式）
     if config_path and os.path.exists(config_path):
@@ -413,8 +416,10 @@ def load_config(config_path: str = None) -> Dict:
             logging.error(f"設定ファイルの読み込みに失敗: {e}")
 
     # 環境変数で上書き（最優先）
-    config['nasne_ip'] = os.getenv('NASNE_IP', config['nasne_ip'])
-    config['discord_webhook_url'] = os.getenv('DISCORD_WEBHOOK_URL', config['discord_webhook_url'])
+    if os.getenv('NASNE_IP'):
+        config['nasne_ip'] = os.getenv('NASNE_IP')
+    if os.getenv('DISCORD_WEBHOOK_URL'):
+        config['discord_webhook_url'] = os.getenv('DISCORD_WEBHOOK_URL')
 
     return config
 
