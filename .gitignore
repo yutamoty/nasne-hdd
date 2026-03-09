@@ -1,0 +1,24 @@
+# 実際の設定ファイル（シークレット情報を含む可能性あり）
+config.yaml
+
+# ランタイムデータ
+data/
+
+# ログファイル
+logs/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+
+# 仮想環境
+venv/
+.venv/
+
+# IDE
+.vscode/
+.idea/

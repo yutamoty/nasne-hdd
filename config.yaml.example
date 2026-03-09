@@ -1,0 +1,15 @@
+# nasne設定
+nasne_ip: "<nasneのIPアドレス>"
+
+# Discord Webhook設定
+discord_webhook_url: "<Discord WebhookのURL>"
+
+# ログ設定
+# log_dir: "logs"              # スクリプト直下のlogsディレクトリ（デフォルト）
+# log_dir: "/tmp/nasne_logs"   # 絶対パス指定も可能
+log_level: "INFO"                # ログレベル (DEBUG, INFO, WARNING, ERROR)
+
+# Raspberry Pi用設定
+network:
+  timeout: 30  # ネットワークタイムアウト（秒）
+  retry_count: 3  # リトライ回数
