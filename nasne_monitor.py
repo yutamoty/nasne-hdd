@@ -245,7 +245,8 @@ class NasneMonitor:
 
         hdd_info = self.get_hdd_info()
         if hdd_info is None:
-            error_msg = "❌ nasneの容量情報取得に失敗しました。nasneの接続状態を確認してください。"
+            timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            error_msg = f"❌ [{timestamp}] nasneの容量情報取得に失敗しました。nasneの接続状態を確認してください。"
             self.send_discord_notification(error_msg)
             return
 
@@ -334,7 +335,8 @@ class NasneMonitor:
 
         hdd_info = self.get_hdd_info()
         if hdd_info is None:
-            error_msg = "❌ nasneの容量情報取得に失敗しました。nasneの接続状態を確認してください。"
+            timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            error_msg = f"❌ [{timestamp}] nasneの容量情報取得に失敗しました。nasneの接続状態を確認してください。"
             self.send_discord_notification(error_msg)
             return
 
