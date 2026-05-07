@@ -249,22 +249,15 @@ class NasneMonitor:
             self.send_discord_notification(error_msg)
             return
 
-        # 前回の値と比較（あなたの既存スクリプトの機能を踏襲）
         current_free_gb = int(hdd_info['free_gb'])
-        last_free_gb = self._get_last_capacity()
+        message = self.format_capacity_message(hdd_info)
+        success = self.send_discord_notification(message)
 
-        if last_free_gb is None or current_free_gb != last_free_gb:
-            # 容量が変化した場合のみ通知
-            message = self.format_capacity_message(hdd_info)
-            success = self.send_discord_notification(message)
-
-            if success:
-                self._save_last_capacity(current_free_gb)
-                logging.info(f"容量変化検知 - 前回: {last_free_gb}GB → 現在: {current_free_gb}GB")
-            else:
-                logging.error("Discord通知送信失敗")
+        if success:
+            self._save_last_capacity(current_free_gb)
+            logging.info(f"日次レポート送信完了 - 空き容量: {current_free_gb}GB")
         else:
-            logging.info(f"容量変化なし - {current_free_gb}GB")
+            logging.error("Discord通知送信失敗")
 
         # 今日のチェック完了を記録
         self._save_last_check_date(today)
